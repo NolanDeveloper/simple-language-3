@@ -96,6 +96,19 @@ namespace SimpleLang.Visitors
             foreach (var v in w.vars)
                 vars[v.Name] = genc.DeclareLocal(typeof(int));
         }
+        public override void VisitIfNode(IfNode cond)
+        {
+            Label falseBranch = genc.DefineLabel();
+            Label endCondition = genc.DefineLabel();
+            cond.expr.Visit(this);
+            genc.Emit(OpCodes.Ldc_I4_0);
+            genc.Emit(OpCodes.Beq, falseBranch);
+            cond.ifTrue.Visit(this);
+            genc.Emit(OpCodes.Br, endCondition);
+            genc.MarkLabel(falseBranch);
+            cond.ifFalse?.Visit(this);
+            genc.MarkLabel(endCondition);
+        }
 
         public void EndProgram()
         {

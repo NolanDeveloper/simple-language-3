@@ -41,5 +41,11 @@ namespace SimpleLang.Visitors
             foreach (var v in w.vars)
                 v.Visit(this);
         }
+        public override void VisitIfNode(IfNode cond)
+        {
+            cond.expr.Visit(this);
+            cond.ifTrue.Visit(this);
+            cond.ifFalse?.Visit(this);
+        }
     }
 }

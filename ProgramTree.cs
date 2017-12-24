@@ -142,4 +142,22 @@ namespace ProgramTree
             v.VisitVarDefNode(this);
         }
     }
+
+    public class IfNode : StatementNode
+    {
+        public ExprNode expr;
+        public StatementNode ifTrue, ifFalse;
+
+        public IfNode(ExprNode expr, StatementNode ifTrue, StatementNode ifFalse = null)
+        {
+            this.expr = expr;
+            this.ifTrue = ifTrue;
+            this.ifFalse = ifFalse;
+        }
+
+        public override void Visit(Visitor v)
+        {
+            v.VisitIfNode(this);
+        }
+    }
 }

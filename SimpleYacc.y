@@ -25,13 +25,17 @@
 %start progr
 
 %token BEGIN END CYCLE ASSIGN ASSIGNPLUS ASSIGNMINUS ASSIGNMULT SEMICOLON WRITE VAR PLUS MINUS MULT DIV MOD LPAREN RPAREN COLUMN
+%token IF THEN ELSE
 %token <iVal> INUM 
 %token <dVal> RNUM 
 %token <sVal> ID
 
 %type <eVal> expr ident T F 
-%type <stVal> statement assign block cycle write empty var varlist 
+%type <stVal> statement assign block cycle write empty var varlist cond
 %type <blVal> stlist block
+
+%left THEN
+%left ELSE
 
 %%
 
@@ -55,6 +59,7 @@ statement: assign { $$ = $1; }
 		| write   { $$ = $1; }
 		| var     { $$ = $1; }
 		| empty   { $$ = $1; }
+		| cond    { $$ = $1; }
 		;
 
 empty	: { $$ = new EmptyNode(); }
@@ -75,6 +80,10 @@ assign 	: ident ASSIGN expr { $$ = new AssignNode($1 as IdNode, $3); }
 expr	: expr PLUS T { $$ = new BinOpNode($1,$3,'+'); }
 		| expr MINUS T { $$ = new BinOpNode($1,$3,'-'); }
 		| T { $$ = $1; }
+		;
+
+cond	: IF expr THEN statement				{ $$ = new IfNode($2, $4); }
+		| IF expr THEN statement ELSE statement	{ $$ = new IfNode($2, $4, $6); }
 		;
 		
 T 		: T MULT F { $$ = new BinOpNode($1,$3,'*'); }
