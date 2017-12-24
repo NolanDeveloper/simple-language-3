@@ -8,7 +8,7 @@ Alpha 	[a-zA-Z_]
 Digit   [0-9] 
 AlphaDigit {Alpha}|{Digit}
 INTNUM  {Digit}+
-REALNUM {INTNUM}\.{INTNUM}
+REALNUM {INTNUM}\,{INTNUM}
 ID {Alpha}{AlphaDigit}* 
 
 %%
@@ -39,6 +39,7 @@ ID {Alpha}{AlphaDigit}*
 "-" { return (int)Tokens.MINUS; }
 "*" { return (int)Tokens.MULT; }
 "/" { return (int)Tokens.DIV; }
+"%" { return (int)Tokens.MOD; }
 "(" { return (int)Tokens.LPAREN; }
 ")" { return (int)Tokens.RPAREN; }
 "," { return (int)Tokens.COLUMN; }

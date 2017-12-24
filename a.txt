@@ -1,6 +1,7 @@
 begin
-  var a,b,d;
-  b := 2;
+  var a,b,c,d;
+  b := 14 / 5; write(b);
+  c := 14 % 5; write(c);
   a := 3;
   a := a * 4 + b;;;
   cycle 3
